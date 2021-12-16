@@ -1,0 +1,125 @@
+<template>
+	<nav class="navbar">
+		<div class="nav-brand">
+			<p>Tuliza</p>
+		</div>
+		<div class="nav-items" :class="{ responsive: dropdown }">
+			<router-link to="/">Home</router-link>
+			<router-link to="/services">Services</router-link>
+			<router-link to="/book">Book</router-link>
+			<router-link to="/contacts">Contact Us</router-link>
+			<router-link to="/about">About</router-link>
+		</div>
+		<div class="nav-toggle" v-on:click="toggleResponsive">
+			<i class="fa fa-bars"></i>
+		</div>
+	</nav>
+</template>
+
+<script>
+export default {
+	name: "NavBar",
+	created() {
+		window.addEventListener("resize", this.checkScreenSize);
+		window.addEventListener("resize", this.resetDropdown);
+		window.addEventListener("scroll", this.resetDropdown);
+
+		this.checkScreenSize;
+	},
+	mounted() {
+		const links = document.querySelectorAll("a");
+		links.forEach((link) => link.addEventListener("click", this.resetDropdown));
+	},
+	data() {
+		return {
+			dropdown: false,
+		};
+	},
+	methods: {
+		resetDropdown() {
+			this.dropdown = false;
+		},
+		toggleResponsive() {
+			this.dropdown = !this.dropdown;
+			console.log("Change " + this.dropdown);
+		},
+		checkScreenSize() {
+			if (window.innerWidth <= 700) {
+				this.mobileMode = true;
+			} else {
+				this.dropdown = false;
+			}
+		},
+	},
+};
+</script>
+
+<style scoped>
+.navbar {
+	position: relative;
+	background: grey;
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+	top: 0;
+	width: 100%;
+	padding: 10px;
+}
+.navbar .nav-brand {
+	left: 0px;
+	display: flex;
+}
+.navbar .nav-brand p {
+	color: white;
+	font-weight: bold;
+	font-size: 1.5rem;
+	padding: 10px;
+}
+.navbar .nav-items {
+	display: flex;
+}
+.navbar a {
+	padding: 10px;
+	text-decoration: none;
+	color: white;
+}
+.navbar .nav-toggle {
+	display: none;
+	color: white;
+	right: 0px;
+}
+.navbar .nav-toggle i {
+	font-size: 1.5rem;
+	padding: 10px;
+}
+
+@media (max-width: 700px) {
+	.navbar {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		width: 100%;
+		background: grey;
+	}
+	.navbar .nav-items a {
+		width: 100%;
+		text-align: center;
+	}
+
+	.navbar .nav-items {
+		background: grey;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		display: none;
+	}
+
+	.navbar .nav-toggle {
+		display: flex;
+		position: absolute;
+	}
+	.navbar .responsive {
+		display: flex;
+	}
+}
+</style>
